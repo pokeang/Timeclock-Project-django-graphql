@@ -8,11 +8,35 @@
 ● Django-GraphQL-JWT version 0.3.4
 ```
 
-#### I also uploaded env folder, so pip install (optional) 
+### Create own enviroment & run project
+Go to path project, run command:
 ```
-pip install graphene-django
-pip install django-graphql-jwt
+python3 -m venv enviroment_name (giving name)
+source enviroment_name/bin/active
+cd timeclock
+pip install -r requirements.txt
+python manage.py runserver
 ```
+#### In case error lib of graphene_django
+env/lib/python3.9/site-packages/graphene_django/utils/utils.py", line 6, in <module>from django.utils.encoding import force_text
+```
+Go to enviroment_folder/graphene_django/utils/utils.py
+replace force_text to force_str
+```
+
+#### I also uploaded env folder, so pip install (optional) , enable env and runserver
+```
+python manage.py runserver
+```
+### Run ClockTestCase (test only clock module)
+stand on project folder, then go to test path:
+```
+cd timeclock
+python manage.py test timetable.tests.clockTestCase
+```
+### It can test with postman
+In post-man folder, it has two files enviroment file & endpoint file
+
 
 ### API that was implemented mutations
 #### Create User, please change your data in (username, password and email)
@@ -76,7 +100,7 @@ mutation clockOut {
 ### An authenticated, query me
 + url: http://localhost:8000/graphql/user
 ```
-query me {
+query {
   me {
     username,
     email
@@ -87,7 +111,7 @@ query me {
 ### An authenticated, query currentClock
 + url: http://localhost:8000/graphql/clock
 ```
-query currentClock {
+query {
   currentClock {
     clock_in,
     clock_out
@@ -98,8 +122,8 @@ query currentClock {
 ### An authenticated, query today is representing numbers of hours worked today
 + url: http://localhost:8000/graphql/clock
 ```
-query clockedHours {
-    clockedHours{
+query {
+    clockedHours(clockedHourType:"Today"){
       today
     }
 }
@@ -108,8 +132,8 @@ query clockedHours {
 ### An authenticated, query currentWeek is representing numbers of hours worked this week
 + url: http://localhost:8000/graphql/clock
 ```
-query clockedHours {
-    clockedHours{
+query {
+    clockedHours(clockedHourType:"currentWeek"){
       currentWeek
     }
 }
@@ -118,8 +142,8 @@ query clockedHours {
 ### An authenticated, query currentMonth is representing numbers of hours worked this month
 + url: http://localhost:8000/graphql/clock
 ```
-query clockedHours {
-    clockedHours{
+query {
+    clockedHours(clockedHourType:"currentMonth"){
       currentMonth
     }
 }
